@@ -70,39 +70,6 @@ BLA_modern_metro=(
     sleep 0.3
 }
 
-show_loadingvpn() {
-    BLA_modern_metro=(
-        '█░░░░░░░' 
-        '██░░░░░░' 
-        '███░░░░░' 
-        '████░░░░' 
-        '█████░░░' 
-        '██████░░' 
-        '███████░' 
-        '████████'
-    )
-
-    # Verify if Openvpn is up
-    vpn=$(ifconfig | grep tun0 | cut -d ":" -f1)
-    if [ "$vpn" == "tun0" ]; then
-        echo -e "${PURPLE}[⊙]${NC} VPN already connected!"
-        return
-    fi
-
-    echo -n -e "${GREEN}[⊙]${NC} Connecting to VPN "
-    for i in "${BLA_modern_metro[@]}"; do
-        # Atualiza a barra de carregamento
-        echo -ne "\r${GREEN}[⊙]${NC} Connecting to VPN  ${PURPLE}${i}${NC} "
-        sleep 0.1
-    done
-
-    # Start Openvpn in background mode
-    openvpn htb.ovpn > /dev/null &
-
-    echo -ne "\r${PURPLE}[⊙]${NC} Connected to VPN!${NC}\n"
-    sleep 0.3
-}
-
 create_directory() {
     local dir="/home/kali/Desktop/HTB/$nome"
     if [ ! -d "$dir" ]; then
@@ -115,7 +82,6 @@ create_directory() {
 
 show_banner
 echo ""
-show_loadingvpn
 echo -e "${PURPLE}[⊙]${NC} Enter the name: \c"
 read nome
 echo -e "${PURPLE}[⊙]${NC} Enter the IP: \c"
@@ -134,7 +100,7 @@ fi
 
 # Mode verify
 if [ $# -eq 0 ]; then
-    echo -e "${RED}[⌀]${NC} No mode specified. Use 'all', 'portscan', or 'dns'."
+    echo -e "${RED}[⌀]${NC} Invalid mode! Use 'all', 'portscan', 'fdir' or 'dns'."
     exit 1
 fi
 
@@ -178,24 +144,26 @@ dns_mode() {
 }
 dir_mode() {
 	echo -e "${PURPLE}[⊙]${NC} Start directory fuzzing? (s/n): \c"
-	read dir
-	echo -e "${PURPLE}[⊙]${NC} Insert the port number: \c"
-	read port
-	if [ "$dir" == "s" ];then
-		echo -e "${PURPLE}[1] -➤${NC} ffuf\r\n${PURPLE}[2] -➤${NC} ferox\r\n${PURPLE}[3] -➤${NC} gobuster"
-		echo -e "${PURPLE}[⊙]${NC} Select tool: \c"
-		read tool
+	read dir	
+	if [ "$dir" == "s" ]; then
+	  echo -e "${PURPLE}[⊙]${NC} Insert the port number: \c"
+	  read port
+	  echo -e "${PURPLE}[1] -➤${NC} ffuf\r\n${PURPLE}[2] -➤${NC} ferox\r\n${PURPLE}[3] -➤${NC} gobuster"
+	  echo -e "${PURPLE}[⊙]${NC} Select tool: \c"
+	  read tool
 	    if [ "$tool" == "1" ];then
 	        show_loading
-	        ffuf -u http://$ip:$port/FUZZ -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -mc 200,301,403
+	        ffuf -u http://$nome:$port/FUZZ -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -mc 200,301,403
 	    elif [ "$tool" == "2" ];then
 	    	show_loading
-	    	feroxbuster -u http://$ip:$port/ -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -A -t 30 --filter-status 404
+	    	feroxbuster -u http://$nome:$port/ -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -A -t 30 --filter-status 404
 	    else 
 	    	show_loading
-	    	gobuster dir -u http://$ip:$port -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
+	    	gobuster dir -u http://$nome:$port -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
 	    fi
-	fi
+    else
+    	echo -e "${RED}[⌀]${NC} Directory fuzzing canceled!"
+    fi
 }
 case $1 in
     all)
@@ -221,7 +189,6 @@ case $1 in
     	;;
     
     *)
-        echo -e "${RED}[⌀]${NC} Invalid mode! Use 'all', 'portscan', or 'dns'."
+        echo -e "${RED}[⌀]${NC} Invalid mode! Use 'all', 'portscan', 'fdir' or 'dns'."
         ;;
 esac
-
