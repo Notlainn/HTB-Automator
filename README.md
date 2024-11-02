@@ -22,8 +22,8 @@ Esse script Bash facilita a automação de tarefas de pentesting na plataforma H
 ## 📥 Instalação
 Clone o repositório e navegue até o diretório:
 ```bash
-git clone https://github.com/yourusername/hackthebox-script.git
-cd hackthebox-script
+git clone https://github.com/Notlainn/HTB-Automator
+cd HTB-Automator
 ```
 
 ## 📝 Uso
@@ -35,11 +35,11 @@ O script possui os seguintes modos de operação:
 
 Para iniciar o script, utilize o seguinte comando:
 ```bash
-./hackthebox.sh <modo>
+./bash_automator.sh <modo>
 ```
 **Exemplo**:
 ```bash
-./hackthebox.sh all
+./bash_automator.sh all
 ```
 
 ### Fluxo Interativo
