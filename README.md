@@ -1,5 +1,3 @@
-Aqui está um README baseado no seu script. Ele destaca as funcionalidades e instruções de uso do código, além de algumas observações sobre dependências.
-
 ---
 
 # 🔥 HackTheBox Automation Script 🔥
@@ -68,5 +66,3 @@ Para iniciar o script, utilize o seguinte comando:
 Este script é fornecido apenas para fins educacionais e deve ser usado de maneira ética e responsável.
 
 --- 
-
-Sinta-se à vontade para personalizar e adicionar mais informações, caso necessário.
