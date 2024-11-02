@@ -2,67 +2,67 @@
 
 # 🔥 HackTheBox Automation Script 🔥
 
-Esse script Bash facilita a automação de tarefas de pentesting na plataforma HackTheBox (HTB), incluindo varreduras de portas, fuzzing de diretórios e de DNS. Com uma interface interativa, ele cria automaticamente pastas para armazenar os resultados e adiciona entradas ao arquivo `/etc/hosts` conforme necessário. 🔒✨
+This Bash script streamlines the automation of pentesting tasks on the HackTheBox (HTB) platform, including port scans, directory fuzzing, and DNS fuzzing. With an interactive interface, it automatically creates folders to store results and adds entries to the `/etc/hosts` file as needed. 🔒✨
 
-## ✨ Características
-- **Banner Animado**: Exibe uma animação de banner estilizada ao iniciar o script.
-- **Modo Portscan**: Executa uma varredura de portas usando o `rustscan`.
-- **Fuzzing DNS**: Testa subdomínios com o `ffuf` e adiciona os encontrados ao `/etc/hosts`.
-- **Fuzzing de Diretórios**: Permite selecionar entre `ffuf`, `feroxbuster` ou `gobuster` para descoberta de diretórios.
-- **Automação com Estilo**: Inclui uma animação de carregamento para indicar progresso nas operações.
+## ✨ Features
+- **Animated Banner**: Displays a stylish banner animation when the script starts.
+- **Portscan Mode**: Runs a port scan using `rustscan`.
+- **DNS Fuzzing**: Tests subdomains with `ffuf` and adds discovered ones to `/etc/hosts`.
+- **Directory Fuzzing**: Allows selection between `ffuf`, `feroxbuster`, or `gobuster` for directory discovery.
+- **Stylish Automation**: Includes a loading animation to show progress in operations.
 
-## 🚀 Requisitos
-- **Ferramentas Necessárias**: Certifique-se de que as seguintes ferramentas estão instaladas:
+## 🚀 Requirements
+- **Required Tools**: Ensure the following tools are installed:
   - `rustscan`
   - `ffuf`
   - `feroxbuster`
   - `gobuster`
-- **Permissões de Superusuário**: Algumas operações, como edição do `/etc/hosts`, requerem privilégios de root.
+- **Superuser Permissions**: Some operations, like editing `/etc/hosts`, require root privileges.
 
-## 📥 Instalação
-Clone o repositório e navegue até o diretório:
+## 📥 Installation
+Clone the repository and navigate to the directory:
 ```bash
 git clone https://github.com/Notlainn/HTB-Automator
 cd HTB-Automator
 ```
 
-## 📝 Uso
-O script possui os seguintes modos de operação:
-- `all`: Executa todas as operações (varredura de portas, fuzzing DNS e fuzzing de diretórios).
-- `portscan`: Realiza apenas a varredura de portas.
-- `dns`: Executa o fuzzing de subdomínios.
-- `fdir`: Executa o fuzzing de diretórios.
+## 📝 Usage
+The script offers the following modes of operation:
+- `all`: Runs all operations (port scan, DNS fuzzing, and directory fuzzing).
+- `portscan`: Performs only the port scan.
+- `dns`: Runs subdomain fuzzing.
+- `fdir`: Runs directory fuzzing.
 
-Para iniciar o script, utilize o seguinte comando:
+To start the script, use the following command:
 ```bash
-./bash_automator.sh <modo>
+./bash_automator.sh <mode>
 ```
-**Exemplo**:
-```bash
-./bash_automator.sh all
-```
-
-### Fluxo Interativo
-1. **Nome e IP**: O script solicitará que você insira o nome e o IP do alvo.
-2. **Criação de Diretório**: Um diretório dedicado ao alvo será criado no Desktop.
-3. **Adição ao `/etc/hosts`**: O IP e o nome do alvo serão adicionados ao `/etc/hosts` (se ainda não existirem).
-4. **Seleção de Modo**: Dependendo do modo selecionado, o script perguntará se você deseja prosseguir com cada operação, adicionando uma animação de carregamento.
-
-## 🔍 Exemplo de Execução
+**Example**:
 ```bash
 ./bash_automator.sh all
 ```
-1. Insira o nome e o IP do alvo quando solicitado.
-2. O script cria a pasta no Desktop (`/home/kali/Desktop/HTB`).
-3. Se o modo `portscan` for selecionado, ele executa o `rustscan` no IP.
-4. Se o modo `dns` for selecionado, ele faz o fuzzing de subdomínios com o `ffuf`.
-5. Se o modo `fdir` for selecionado, você pode escolher entre `ffuf`, `feroxbuster` ou `gobuster` para o fuzzing de diretórios.
 
-## ⚙️ Exemplo de Configuração
-- **Configuração do Host**: O script adiciona automaticamente o domínio `nome.htb` e subdomínios ao `/etc/hosts` quando encontrados.
-- **Portas e Padrões**: As ferramentas de fuzzing são configuradas para procurar respostas de status HTTP específicas (como 200, 301 e 403).
+### Interactive Flow
+1. **Target Name and IP**: The script will prompt you to enter the target's name and IP.
+2. **Directory Creation**: A dedicated directory for the target will be created on the Desktop.
+3. **Addition to `/etc/hosts`**: The target IP and name will be added to `/etc/hosts` (if not already present).
+4. **Mode Selection**: Based on the selected mode, the script will ask if you want to proceed with each operation, adding a loading animation.
 
-## ⚠️ Aviso
-Este script é fornecido apenas para fins educacionais e deve ser usado de maneira ética e responsável.
+## 🔍 Execution Example
+```bash
+./bash_automator.sh all
+```
+1. Enter the target name and IP when prompted.
+2. The script creates the folder on the Desktop (`/home/kali/Desktop/HTB`).
+3. If `portscan` mode is selected, it runs `rustscan` on the IP.
+4. If `dns` mode is selected, it performs subdomain fuzzing with `ffuf`.
+5. If `fdir` mode is selected, you can choose between `ffuf`, `feroxbuster`, or `gobuster` for directory fuzzing.
 
---- 
+## ⚙️ Configuration Example
+- **Host Configuration**: The script automatically adds the `name.htb` domain and any discovered subdomains to `/etc/hosts`.
+- **Ports and Patterns**: Fuzzing tools are configured to search for specific HTTP status responses (such as 200, 301, and 403).
+
+## ⚠️ Disclaimer
+This script is provided for educational purposes only and should be used ethically and responsibly.
+
+---
