@@ -50,7 +50,7 @@ Para iniciar o script, utilize o seguinte comando:
 
 ## 🔍 Exemplo de Execução
 ```bash
-./hackthebox.sh all
+./bash_automator.sh all
 ```
 1. Insira o nome e o IP do alvo quando solicitado.
 2. O script cria a pasta no Desktop (`/home/kali/Desktop/HTB`).
