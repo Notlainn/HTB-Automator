@@ -22,8 +22,8 @@ This Bash script streamlines the automation of pentesting tasks on the HackTheBo
 ## 📥 Installation
 Clone the repository and navigate to the directory:
 ```bash
-git clone https://github.com/Notlainn/HTB-Automator
-cd HTB-Automator
+git clone https://github.com/Notlainn/Copland
+cd Copland
 ```
 
 ## 📝 Usage
@@ -35,11 +35,11 @@ The script offers the following modes of operation:
 
 To start the script, use the following command:
 ```bash
-./bash_automator.sh <mode>
+./Copland <mode>
 ```
 **Example**:
 ```bash
-./bash_automator.sh all
+./Copland all
 ```
 
 ### Interactive Flow
@@ -50,7 +50,7 @@ To start the script, use the following command:
 
 ## 🔍 Execution Example
 ```bash
-./bash_automator.sh all
+./Copland all
 ```
 1. Enter the target name and IP when prompted.
 2. The script creates the folder on the Desktop (`/home/kali/Desktop/HTB`).
