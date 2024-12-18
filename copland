@@ -1,54 +1,73 @@
 #!/bin/bash
 
+##########################################################################
+# This section is responsible for defining global variables.             #
+# Each section is separated by a comment block similar to this one.      #
+##########################################################################
+#
+# Define the colors used within the program.
 RED='\e[1;31m'
 GREEN='\e[1;32m'
 PURPLE='\e[1;35m'
 CYAN='\e[1;36m'
 NC='\e[0m'
 
-show_banner() {
-  LIGHT_PURPLE='\e[1;35m'  # Roxo claro
-  DARK_PURPLE='\e[0;35m'   # Roxo escuro
+# Grabs the current console user
+currentUser=$(whoami)
 
-  # Mensagem a ser exibida
+#-------------------------------------------------------------------------#
+#-------------------------------------------------------------------------#
+
+##########################################################################
+# This section is responsible for the visual information of the program. #
+# This section will load the main banner of the program, the HTB machine #
+# icon and display both.                                                 #
+##########################################################################
+#
+# This function is used to display the main banner for the tool.
+show_banner() {
+  LIGHT_PURPLE='\e[1;35m'
+  DARK_PURPLE='\e[0;35m'
+
+  # Show the program principal message.
   MESSAGE="No matter where you go, everyone is connected."
   MESSAGE_LENGTH=${#MESSAGE}
   
-  # Calcular a largura total da borda e o número de espaços para centralização
+  # Calculate the total width of the margin and the number of centering spaces.
   BORDER_WIDTH=61
   SPACES=$(( (BORDER_WIDTH - MESSAGE_LENGTH) / 2 ))
   SPACE_STRING=$(printf '%*s' "$SPACES")
 
-  # Exibir o banner
+  # Set the main banner.
   echo -e "${DARK_PURPLE}╔═════════════════════════════════════════════════════════════╗
-${LIGHT_PURPLE}
-   ██████╗ ${DARK_PURPLE}██████╗ ${LIGHT_PURPLE}██████╗ ${DARK_PURPLE}██╗      ${LIGHT_PURPLE}█████╗ ${DARK_PURPLE}███╗   ██╗${LIGHT_PURPLE}██████╗ 
+  ${LIGHT_PURPLE}
+  ██████╗ ${DARK_PURPLE}██████╗ ${LIGHT_PURPLE}██████╗ ${DARK_PURPLE}██╗      ${LIGHT_PURPLE}█████╗ ${DARK_PURPLE}███╗   ██╗${LIGHT_PURPLE}██████╗ 
   ${DARK_PURPLE}██╔════╝${LIGHT_PURPLE}██╔═══██╗${DARK_PURPLE}██╔══██╗${LIGHT_PURPLE}██║     ${DARK_PURPLE}██╔══██╗${LIGHT_PURPLE}████╗  ██║${DARK_PURPLE}██╔══██╗
   ${LIGHT_PURPLE}██║     ${DARK_PURPLE}██║   ██║${LIGHT_PURPLE}██████╔╝${DARK_PURPLE}██║     ${LIGHT_PURPLE}███████║${DARK_PURPLE}██╔██╗ ██║${LIGHT_PURPLE}██║  ██║
   ${DARK_PURPLE}██║     ${LIGHT_PURPLE}██║   ██║${DARK_PURPLE}██╔═══╝ ${LIGHT_PURPLE}██║     ${DARK_PURPLE}██╔══██║${LIGHT_PURPLE}██║╚██╗██║${DARK_PURPLE}██║  ██║
   ${LIGHT_PURPLE}╚██████╗${DARK_PURPLE}╚██████╔╝${LIGHT_PURPLE}██║     ${DARK_PURPLE}███████╗${LIGHT_PURPLE}██║  ██║${DARK_PURPLE}██║ ╚████║${LIGHT_PURPLE}██████╔╝
-   ${DARK_PURPLE}╚═════╝ ${LIGHT_PURPLE}╚═════╝ ${DARK_PURPLE}╚═╝     ${LIGHT_PURPLE}╚══════╝${DARK_PURPLE}╚═╝  ╚═╝${LIGHT_PURPLE}╚═╝  ╚═══╝${DARK_PURPLE}╚═════╝
+  ${DARK_PURPLE}╚═════╝ ${LIGHT_PURPLE}╚═════╝ ${DARK_PURPLE}╚═╝     ${LIGHT_PURPLE}╚══════╝${DARK_PURPLE}╚═╝  ╚═╝${LIGHT_PURPLE}╚═╝  ╚═══╝${DARK_PURPLE}╚═════╝
+  ${DARK_PURPLE}╚═════════════════════════════════════════════════════════════╝"
 
-${DARK_PURPLE}╚═════════════════════════════════════════════════════════════╝"
-
-  # Exibir o banner
+  # Show the main banner.
   echo -e "$echo" 
 
-  # Escrever a mensagem letra por letra
+  # Write the banner message, letter by letter.
   for (( i=0; i<MESSAGE_LENGTH; i++ )); do
     echo -ne "\r${DARK_PURPLE}${SPACE_STRING}${LIGHT_PURPLE}${MESSAGE:0:i+1}"
     sleep 0.02
   done
 
-  # Exibir a mensagem finalizada e borda inferior
-  echo -ne "\r${DARK_PURPLE}${SPACE_STRING}${LIGHT_PURPLE}${MESSAGE}" # Exibe a mensagem completa
+  # Display the finished message and the bottom border.
+  echo -ne "\r${DARK_PURPLE}${SPACE_STRING}${LIGHT_PURPLE}${MESSAGE}"
   echo ""
   echo ""
   echo -e "${DARK_PURPLE}╔═════════════════════════════════════════════════════════════╗${NC}"
 }
-# Função para mostrar a animação de carregamento
+
+# Function used to display the loading animation.
 show_loading() {
-BLA_modern_metro=(
+  BLA_modern_metro=(
     '█░░░░░░░' 
     '██░░░░░░' 
     '███░░░░░' 
@@ -57,21 +76,34 @@ BLA_modern_metro=(
     '██████░░' 
     '███████░' 
     '████████' 
-)
-    # Inicializa a linha
+  )
+    # Initiliaze the loading line.
     echo -n -e "${GREEN}[⊙]${NC} Loading "
+
+    # 
     for i in "${BLA_modern_metro[@]}"; do
-        # Atualiza a barra de carregamento
         echo -ne "\r${GREEN}[⊙]${NC} Loading ${PURPLE}${i}${NC} "
         sleep 0.1
     done
-    # Retorna ao início da linha e substitui a mensagem
+
+    # Return to the beginning of the line and overwrites the message.
     echo -ne "\r${PURPLE}[⊙]${NC} Loading complete!${NC}\n"
     sleep 0.3
 }
 
-create_directory() {
-    local dir="/home/kali/Desktop/HTB/$nome"
+#-------------------------------------------------------------------------#
+#-------------------------------------------------------------------------#
+
+##########################################################################
+# This section is responsible for gathering the HTB machine information  #
+# and for creating its folder locally on the user machine.               #
+##########################################################################
+#
+# Function responsible for creating a folder with the machine name.
+# The main folder is created under the current users home directory.
+# It initially creates the "HTB" directory and then the machine folder.
+createMachineDirectory() {
+    local dir="/home/$currentUser/Desktop/HTB/$machineName"
     if [ ! -d "$dir" ]; then
         mkdir -p "$dir"
         echo -e "${GREEN}[⊙]${NC} Created directory at: $dir"
@@ -80,65 +112,53 @@ create_directory() {
     fi
 }
 
-get_icon() {
-	icon=$(curl -s https://www.hackthebox.com/machines/$nome | grep "https://labs.hackthebox.com/storage/avatars" | cut -d '=' -f3 | sed 's/alt//' | head -n 1 | tr -d \")
+# Function responsible for grabbing the machine icon from HTB.
+# It only works if the machine name was typed in correctly.
+getMachineIcon() {
+	icon=$(curl -s https://www.hackthebox.com/machines/$machineName | grep "https://labs.hackthebox.com/storage/avatars" | cut -d '=' -f3 | sed 's/alt//' | head -n 1 | tr -d \")
 	echo -e "${PURPLE}[⌀]${NC} Url icon: $icon"
 }
 
-show_banner
-echo ""
-echo -e "${PURPLE}[⊙]${NC} Enter the name: \c"
-read nome
-echo -e "${PURPLE}[⊙]${NC} Enter the IP: \c"
-read ip
+#-------------------------------------------------------------------------#
+#-------------------------------------------------------------------------#
 
-create_directory
-
-verify=$(grep -w "$ip $nome.htb" /etc/hosts)
-
-if [ -n "$verify" ]; then
-    echo -e "${RED}[⌀]${NC} Directory already added to /etc/hosts"
-else
-    echo "$ip $nome.htb" | sudo tee -a /etc/hosts > /dev/null
-    echo -e "${GREEN}[⊙]${NC} $ip $nome.htb added to /etc/hosts"
-fi
-
-get_icon
-
-# Mode verify
-if [ $# -eq 0 ]; then
-    echo -e "${RED}[⌀]${NC} Invalid mode! Use 'all', 'portscan', 'fdir' or 'dns'."
-    exit 1
-fi
-
-portscan_mode() {	
-        # Start Portscan with loading effects
+##########################################################################
+# This section is responsible for functions that will perform recon.     #
+##########################################################################
+#
+# This function is  responsible for performing port scanning with "RustScan"
+# on the target HTB machine.
+portScanMode() {	
+        # Start Port scan with loading effects
         echo -e "${PURPLE}[⊙]${NC} Start Portscan?(s/n): \c"
         read pscan
         if [ "$pscan" == "s" ]; then
-            cd /home/kali/Desktop/HTB/$nome
+            cd /home/$currentUser/Desktop/HTB/$machineName
             show_loading
-            rustscan -r 1-65535 --ulimit 5000 -t 2000 -a $ip -- -sV -sC -Pn -oN scan.txt
+            rustscan -r 1-65535 --ulimit 5000 -t 2000 -a $machineIP -- -sV -sC -Pn -oN scan.txt
             echo -e "${GREEN}[⊙]${NC} Portscan finished!"
         else 
             echo -e "${RED}[⌀]${NC} Portscan canceled!"
         fi
         
 }
-dns_mode() {
+
+# This function is  responsible for performing subdomain fuzzing on the target
+# HTB machine.
+dnsMode() {
         # Ask about fuzzing DNS
         echo -e "${PURPLE}[⊙]${NC} Start DNS fuzzing? (s/n): \c"
         read dns
         if [ "$dns" == "s" ]; then
             show_loading
-            ffuf -c -u http://$nome.htb -H "Host: FUZZ.$nome.htb" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt -t 100 -ac -o output -of md
+            ffuf -c -u http://$machineName.htb -H "Host: FUZZ.$machineName.htb" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt -t 100 -ac -o output -of md
             output=$(cat output | cut -d "|" -f4 | tail -n 2 | grep -v "/\/" | tr -d '/' | sed 's/:---------------//' > output)
             check=$(wc -w output | cut -d " " -f1)
             tr -d ' ' < output | grep -v '^$' > output1
             subdomain=$(cat output1)
             if [ "$check" -ge "1" ]; then
             	echo -e "${GREEN}[⊙]${NC} Subdomain founded!" 
-                sudo sed -i "s|$ip $nome.htb|$ip $nome.htb $subdomain.$nome.htb|" /etc/hosts
+                sudo sed -i "s|$machineIP $machineName.htb|$machineIP $machineName.htb $subdomain.$machineName.htb|" /etc/hosts
       	        echo -e "${GREEN}[⊙]${NC} Subdomain added to /etc/hosts"
             else
             	echo -e "${RED}[⌀]${NC} No subdomain founded!"
@@ -149,7 +169,10 @@ dns_mode() {
             echo -e "${RED}[⌀]${NC} Fuzzing canceled!"
         fi     
 }
-dir_mode() {
+
+# This function is  responsible for performing directory fuzzing on the target
+# HTB machine.
+dirMode() {
 	echo -e "${PURPLE}[⊙]${NC} Start directory fuzzing? (s/n): \c"
 	read dir	
 	if [ "$dir" == "s" ]; then
@@ -160,42 +183,82 @@ dir_mode() {
 	  read tool
 	    if [ "$tool" == "1" ];then
 	        show_loading
-	        ffuf -u http://$nome.htb:$port/FUZZ -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -mc 200,301,403
+	        ffuf -u http://$machineName.htb:$port/FUZZ -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -mc 200,301,403
 	    elif [ "$tool" == "2" ];then
 	    	show_loading
-	    	feroxbuster -u http://$nome.htb:$port/ -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -A -t 30 --filter-status 404
+	    	feroxbuster -u http://$machineName.htb:$port/ -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -A -t 30 --filter-status 404
 	    else 
 	    	show_loading
-	    	gobuster dir -u http://$nome.htb:$port -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
+	    	gobuster dir -u http://$machineName.htb:$port -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
 	    fi
     else
     	echo -e "${RED}[⌀]${NC} Directory fuzzing canceled!"
     fi
 }
+
+#-------------------------------------------------------------------------#
+#-------------------------------------------------------------------------#
+
+##########################################################################
+# This section is responsible for the main initial logic of the program. #
+##########################################################################
+#
+# Calls the main banner function
+show_banner
+
+# Verify if a valid mode was passed to the program.
+if [ $# -eq 0 ]; then
+    echo -e "${RED}[⌀]${NC} Invalid usage mode! Use one of the available: 'all', 'portscan', 'fdir' or 'dns'."
+    exit 1
+fi
+
+# Asks the user about the machine information such as its name and IP.
+echo ""
+echo -e "${PURPLE}[⊙]${NC} Enter the machine name: \c"
+read machineName
+echo -e "${PURPLE}[⊙]${NC} Enter the machine IP: \c"
+read machineIP
+
+# Calls the function responsible for creating the machine folder locally.
+createMachineDirectory
+
+# Verify if the machine IP address and domain already exists within the "hosts" file.
+verify=$(grep -w "$machineIP $machineName.htb" /etc/hosts)
+if [ -n "$verify" ]; then # If domain already exists
+    echo -e "${RED}[⌀]${NC} Domain already exists on /etc/hosts"
+else
+    echo "$machineIP $machineName.htb" | sudo tee -a /etc/hosts > /dev/null
+    echo -e "${GREEN}[⊙]${NC} $machineIP $machineName.htb added to /etc/hosts"
+fi
+
+# Calls the function to download the machine icon.
+getMachineIcon
+
+# Verifies which usage mode was passed as user input
 case $1 in
     all)
     
-    	portscan_mode
-    	dns_mode
-    	dir_mode
+    	portScanMode
+    	dnsMode
+    	dirMode
     	;;
     	
     portscan)
 
-    	portscan_mode
+    	portScanMode
     	;;
     
     dns)
         
-    	dns_mode
+    	dnsMode
     	;;
     
     fdir)
     
-    	dir_mode
+    	dirMode
     	;;
     
     *)
-        echo -e "${RED}[⌀]${NC} Invalid mode! Use 'all', 'portscan', 'fdir' or 'dns'."
+        echo -e "${RED}[⌀]${NC} Invalid usage mode! Use 'all', 'portscan', 'fdir' or 'dns'."
         ;;
 esac
